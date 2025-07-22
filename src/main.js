@@ -4,9 +4,11 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+let airplane;
+
 const loader = new THREE.GLTFLoader();
 loader.load('assets/models/airplane.glb', function (gltf) {
-    const airplane = gltf.scene;
+    airplane = gltf.scene;
     scene.add(airplane);
     airplane.position.set(0, 0, 0);
 }, undefined, function (error) {
@@ -22,12 +24,32 @@ scene.add(skybox);
 
 camera.position.z = 5;
 
+function setAirplaneColor(hex) {
+    if (!airplane) return;
+    airplane.traverse(child => {
+        if (child.isMesh && child.material) {
+            child.material = child.material.clone();
+            if (child.material.color) {
+                child.material.color.set(hex);
+                child.material.needsUpdate = true;
+            }
+        }
+    });
+}
+
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
 }
 
 animate();
+
+const colorInput = document.getElementById('colorPicker');
+if (colorInput) {
+    colorInput.addEventListener('input', event => {
+        setAirplaneColor(event.target.value);
+    });
+}
 
 window.addEventListener('keydown', function (event) {
     switch (event.key) {
