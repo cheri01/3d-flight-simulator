@@ -8,6 +8,7 @@ Welcome to the 3D Flight Simulator project! This project is a web-based flight s
 - Interactive flight controls
 - Beautiful skybox background
 - Custom shaders for enhanced graphics
+- Adjustable airplane color
 
 ## Getting Started
 
